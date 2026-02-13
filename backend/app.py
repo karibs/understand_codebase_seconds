@@ -24,6 +24,7 @@ app.config.from_object(Config)
 cors_origins = [
     'http://localhost:3000',
     'http://127.0.0.1:3000',
+    'https://karibs.github.io',
 ]
 if os.getenv('CORS_ORIGIN'):
     cors_origins.append(os.getenv('CORS_ORIGIN'))
