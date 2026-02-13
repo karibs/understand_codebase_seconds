@@ -1,10 +1,12 @@
 <script setup>
+import { computed } from 'vue'
+
 const emit = defineEmits(['start'])
 
-const GITHUB_REPO = 'https://github.com/karibs/understand_codebase_seconds'
+const basePath = import.meta.env.BASE_URL || '/'
 
 function downloadBackend() {
-  window.open(`${GITHUB_REPO}/archive/refs/heads/main.zip`, '_blank')
+  window.location.href = `${basePath}architect-backend.zip`
 }
 </script>
 

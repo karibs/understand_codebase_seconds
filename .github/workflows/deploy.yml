@@ -19,6 +19,13 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Package backend as ZIP
+        run: |
+          mkdir -p frontend/public
+          cd backend
+          zip -r ../frontend/public/architect-backend.zip . \
+            -x "__pycache__/*" "*.pyc" "*.pyo" ".env" "venv/*" ".venv/*" "workspace/*"
+
       - uses: actions/setup-node@v4
         with:
           node-version: 20
