@@ -2,8 +2,13 @@
 set -e
 
 echo "============================================"
-echo "  Architect - AI Workflow Builder (Agent)"
+echo "  Architect - Project Analyzer"
 echo "============================================"
+echo
+echo "  This backend runs a LOCAL-ONLY server on"
+echo "  your computer (localhost:5000). It reads"
+echo "  project files for analysis. No data is"
+echo "  sent to any external server."
 echo
 
 # Check Python
@@ -30,19 +35,12 @@ pip install -r requirements.txt --quiet
 if [ ! -f ".env" ] && [ -f ".env.example" ]; then
     echo "[*] Creating .env from .env.example..."
     cp .env.example .env
-    echo "[!] Please edit .env and add your API keys before continuing."
-    read -p "Press Enter to continue..."
 fi
 
 # Start server
 echo
 echo "[*] Starting server on http://localhost:5000"
+echo "[*] Open the Architect website and click \"Start Analyzing\""
+echo "[*] Press Ctrl+C to stop the server"
 echo
-
-if python3 -c "import gunicorn" 2>/dev/null; then
-    echo "[*] Running with Gunicorn production server..."
-    gunicorn app:app --bind 0.0.0.0:5000 --workers 2
-else
-    echo "[*] Running with Flask development server..."
-    python3 app.py
-fi
+python3 app.py

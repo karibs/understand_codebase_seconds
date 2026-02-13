@@ -1,7 +1,12 @@
 @echo off
 echo ============================================
-echo   Architect - AI Workflow Builder (Agent)
+echo   Architect - Project Analyzer
 echo ============================================
+echo.
+echo   This backend runs a LOCAL-ONLY server on
+echo   your computer (localhost:5000). It reads
+echo   project files for analysis. No data is
+echo   sent to any external server.
 echo.
 
 :: Check Python
@@ -31,23 +36,15 @@ if not exist ".env" (
     if exist ".env.example" (
         echo [*] Creating .env from .env.example...
         copy .env.example .env
-        echo [!] Please edit .env and add your API keys before continuing.
-        pause
     )
 )
 
 :: Start server
 echo.
 echo [*] Starting server on http://localhost:5000
+echo [*] Open the Architect website and click "Start Analyzing"
+echo [*] Press Ctrl+C to stop the server
 echo.
-
-python -c "import waitress" >nul 2>&1
-if errorlevel 1 (
-    echo [*] Running with Flask development server...
-    python app.py
-) else (
-    echo [*] Running with Waitress production server...
-    python -c "from waitress import serve; from app import app; print('Serving on http://localhost:5000'); serve(app, host='0.0.0.0', port=5000)"
-)
+python app.py
 
 pause

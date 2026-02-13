@@ -1,11 +1,21 @@
 <script setup>
-import { computed } from 'vue'
+import { ref } from 'vue'
 
 const emit = defineEmits(['start'])
 
 const basePath = import.meta.env.BASE_URL || '/'
+const showModal = ref(false)
 
-function downloadBackend() {
+function openDownloadModal() {
+  showModal.value = true
+}
+
+function closeModal() {
+  showModal.value = false
+}
+
+function confirmDownload() {
+  showModal.value = false
   window.location.href = `${basePath}architect-backend.zip`
 }
 </script>
@@ -39,7 +49,7 @@ function downloadBackend() {
           Start Analyzing
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
         </button>
-        <button class="btn-download" @click="downloadBackend">
+        <button class="btn-download" @click="openDownloadModal">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
           Download Backend
         </button>
@@ -127,6 +137,66 @@ function downloadBackend() {
     <footer class="landing-footer">
       <p>&copy; 2026 Architect &mdash; Project Analyzer</p>
     </footer>
+
+    <!-- Download Modal -->
+    <Teleport to="body">
+      <div v-if="showModal" class="modal-overlay" @click.self="closeModal">
+        <div class="modal-card">
+          <button class="modal-close" @click="closeModal">&times;</button>
+
+          <div class="modal-icon">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+          </div>
+
+          <h3 class="modal-title">About the Backend</h3>
+
+          <div class="modal-body">
+            <p class="modal-desc">
+              The backend is a lightweight Python server that runs
+              <strong>locally on your computer</strong>. It is required to
+              scan and analyze your project files.
+            </p>
+
+            <div class="modal-section">
+              <h4>What it does</h4>
+              <ul>
+                <li>Reads file names and contents from the project folder you select</li>
+                <li>Detects frameworks, languages, and dependencies</li>
+                <li>Builds an interactive graph of file relationships</li>
+              </ul>
+            </div>
+
+            <div class="modal-section">
+              <h4>Security</h4>
+              <ul>
+                <li>Runs on <strong>localhost only</strong> &mdash; not accessible from the internet</li>
+                <li><strong>No data is sent</strong> to any external server</li>
+                <li><strong>Read-only</strong> &mdash; never writes, modifies, or deletes your files</li>
+                <li>No AI keys or cloud services required</li>
+              </ul>
+            </div>
+
+            <div class="modal-section">
+              <h4>How to run</h4>
+              <ol>
+                <li>Unzip the downloaded file</li>
+                <li>Double-click <code>start.bat</code> (Windows) or run <code>./start.sh</code> (Mac/Linux)</li>
+                <li>The server starts at <code>http://localhost:5000</code></li>
+              </ol>
+              <p class="modal-note">Requires Python 3.10+. Dependencies are installed automatically.</p>
+            </div>
+          </div>
+
+          <div class="modal-actions">
+            <button class="modal-btn-cancel" @click="closeModal">Cancel</button>
+            <button class="modal-btn-download" @click="confirmDownload">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+              Download ZIP
+            </button>
+          </div>
+        </div>
+      </div>
+    </Teleport>
   </div>
 </template>
 
@@ -448,6 +518,165 @@ function downloadBackend() {
   color: #94A3B8;
   font-size: 0.8125rem;
   border-top: 1px solid #F1F5F9;
+}
+
+/* ---------- Modal ---------- */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+  padding: 1.5rem;
+}
+
+.modal-card {
+  background: #fff;
+  border-radius: 20px;
+  max-width: 520px;
+  width: 100%;
+  max-height: 85vh;
+  overflow-y: auto;
+  padding: 2rem;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+  position: relative;
+}
+
+.modal-close {
+  position: absolute;
+  top: 1rem;
+  right: 1.25rem;
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  color: #94A3B8;
+  cursor: pointer;
+  line-height: 1;
+  padding: 0.25rem;
+}
+
+.modal-close:hover {
+  color: #1a1a2e;
+}
+
+.modal-icon {
+  width: 56px;
+  height: 56px;
+  border-radius: 14px;
+  background: linear-gradient(135deg, #DBEAFE, #EFF6FF);
+  color: #3B82F6;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 1rem;
+}
+
+.modal-title {
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: #1a1a2e;
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+.modal-body {
+  text-align: left;
+}
+
+.modal-desc {
+  font-size: 0.9rem;
+  color: #475569;
+  line-height: 1.65;
+  margin-bottom: 1.25rem;
+}
+
+.modal-section {
+  margin-bottom: 1rem;
+}
+
+.modal-section h4 {
+  font-size: 0.8125rem;
+  font-weight: 700;
+  color: #6366F1;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 0.5rem;
+}
+
+.modal-section ul,
+.modal-section ol {
+  margin: 0;
+  padding-left: 1.25rem;
+  font-size: 0.85rem;
+  color: #475569;
+  line-height: 1.7;
+}
+
+.modal-section li {
+  margin-bottom: 0.2rem;
+}
+
+.modal-section code {
+  background: #F1F5F9;
+  padding: 0.15rem 0.4rem;
+  border-radius: 4px;
+  font-size: 0.8rem;
+  color: #6366F1;
+}
+
+.modal-note {
+  font-size: 0.8rem;
+  color: #94A3B8;
+  margin-top: 0.5rem;
+}
+
+.modal-actions {
+  display: flex;
+  gap: 0.75rem;
+  justify-content: flex-end;
+  margin-top: 1.5rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid #F1F5F9;
+}
+
+.modal-btn-cancel {
+  padding: 0.625rem 1.25rem;
+  border: 1.5px solid #E2E8F0;
+  border-radius: 10px;
+  background: #fff;
+  color: #64748B;
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: border-color 0.2s;
+}
+
+.modal-btn-cancel:hover {
+  border-color: #CBD5E1;
+}
+
+.modal-btn-download {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.625rem 1.5rem;
+  border: none;
+  border-radius: 10px;
+  background: linear-gradient(135deg, #6366F1, #8B5CF6);
+  color: #fff;
+  font-size: 0.875rem;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 4px 14px rgba(99, 102, 241, 0.3);
+  transition: transform 0.15s, box-shadow 0.15s;
+}
+
+.modal-btn-download:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 20px rgba(99, 102, 241, 0.4);
 }
 
 /* ---------- Responsive ---------- */
