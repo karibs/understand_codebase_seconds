@@ -25,6 +25,8 @@ cors_origins = [
     'http://localhost:3000',
     'http://127.0.0.1:3000',
     'https://karibs.github.io',
+    'https://www.searchproject.ai.kr',
+    'https://searchproject.ai.kr',
 ]
 if os.getenv('CORS_ORIGIN'):
     cors_origins.append(os.getenv('CORS_ORIGIN'))
@@ -100,8 +102,10 @@ def browse_folder():
             from tkinter import filedialog
             root = tk.Tk()
             root.withdraw()
-            root.attributes('-topmost', True)
-            folder = filedialog.askdirectory(title='Select Project Folder')
+            root.wm_attributes('-topmost', True)
+            root.lift()
+            root.focus_force()
+            folder = filedialog.askdirectory(title='Select Project Folder', parent=root)
             root.destroy()
             result['path'] = folder or ''
         except Exception as e:
