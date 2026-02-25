@@ -2,7 +2,7 @@ import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 
 export default defineConfig({
-  base: '/understand_codebase_seconds/',
+  base: '/',
   plugins: [vue()],
   server: {
     port: 3000,
