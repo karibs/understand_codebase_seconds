@@ -12,6 +12,7 @@ export const useWorkflowStore = defineStore('workflow', () => {
   const projectRoot = ref('')
   const isInitialized = ref(false)
   const analysisPath = ref('')
+  const selectedFolderNodeId = ref(null)
 
   // File content preview state
   const fileContent = ref(null)       // { file, content, lines, size, error? }
@@ -43,12 +44,17 @@ export const useWorkflowStore = defineStore('workflow', () => {
     error.value = null
   }
 
+  function selectFolder(nodeId) {
+    selectedFolderNodeId.value = selectedFolderNodeId.value === nodeId ? null : nodeId
+  }
+
   function reset() {
     nodes.value = []
     edges.value = []
     selectedNode.value = null
     isInitialized.value = false
     analysisPath.value = ''
+    selectedFolderNodeId.value = null
     error.value = null
   }
 
@@ -179,6 +185,7 @@ export const useWorkflowStore = defineStore('workflow', () => {
     projectRoot,
     isInitialized,
     analysisPath,
+    selectedFolderNodeId,
     fileContent,
     isLoadingFile,
     recentProjects,
@@ -188,6 +195,7 @@ export const useWorkflowStore = defineStore('workflow', () => {
 
     // Actions
     selectNode,
+    selectFolder,
     clearError,
     reset,
     fetchProjectRoot,

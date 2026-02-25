@@ -5,6 +5,7 @@ import LandingPage from './components/LandingPage.vue'
 import ProjectAnalysis from './components/ProjectAnalysis.vue'
 import WorkflowGraph from './components/WorkflowGraph.vue'
 import NodeDetails from './components/NodeDetails.vue'
+import FolderTree from './components/FolderTree.vue'
 
 const store = useWorkflowStore()
 const currentView = ref('landing') // 'landing' | 'analysis' | 'workflow'
@@ -62,6 +63,9 @@ function backToAnalysis() {
       <!-- Graph View -->
       <template v-else-if="currentView === 'workflow'">
         <div class="workflow-layout">
+          <div class="folder-panel">
+            <FolderTree />
+          </div>
           <div class="graph-panel">
             <WorkflowGraph />
           </div>
@@ -190,23 +194,31 @@ function backToAnalysis() {
   flex: 1;
   display: flex;
   flex-direction: column;
-  padding: 1.5rem;
-  gap: 1.5rem;
+  padding: 0;
+  gap: 0;
+  min-height: 0;
+  overflow: hidden;
 }
 
 .workflow-layout {
   flex: 1;
   display: grid;
-  grid-template-columns: 1fr 400px;
-  gap: 1.5rem;
+  grid-template-columns: 200px 1fr 360px;
+  gap: 0;
   min-height: 0;
+}
+
+.folder-panel {
+  min-height: 0;
+  overflow: hidden;
 }
 
 .graph-panel {
   background: var(--bg-secondary);
-  border-radius: 12px;
-  border: 1px solid var(--border-color);
+  border-left: 1px solid var(--border-color);
+  border-right: 1px solid var(--border-color);
   overflow: hidden;
+  min-height: 0;
 }
 
 .details-panel {
@@ -214,16 +226,16 @@ function backToAnalysis() {
   flex-direction: column;
   gap: 1rem;
   overflow-y: auto;
+  padding: 1rem;
 }
 
 .no-selection {
-  background: #fff;
+  background: var(--bg-secondary, #1E293B);
   border-radius: 12px;
-  border: 1px solid #F1F5F9;
+  border: 1px solid var(--border-color, #334155);
   padding: 2rem;
   text-align: center;
   color: #94A3B8;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
 }
 
 .no-selection-icon {

@@ -15,6 +15,58 @@ const { fitView, getViewport, setViewport } = useVueFlow()
 const focusPositions = ref(null)   // null or { [nodeId]: {x, y} } — absolute positions for circle
 const savedViewport = ref(null)    // saved {x, y, zoom} before focus
 
+// Collect all descendant node IDs for a given folder node ID
+function getFolderDescendantIds(folderId) {
+  const ids = new Set()
+  function collect(parentId) {
+    store.nodes.forEach(n => {
+      if (n.parentNode === parentId) {
+        ids.add(n.id)
+        if (n.type === 'directory') collect(n.id)
+      }
+    })
+  }
+  collect(folderId)
+  return ids
+}
+
+// File node IDs that belong to the selected folder (excludes directory nodes themselves)
+const folderFilterNodeIds = computed(() => {
+  if (!store.selectedFolderNodeId) return null
+  const ids = getFolderDescendantIds(store.selectedFolderNodeId)
+  // Keep only file nodes for the filter set
+  const fileIds = new Set()
+  ids.forEach(id => {
+    const n = store.nodes.find(n => n.id === id)
+    if (n && n.type !== 'directory') fileIds.add(id)
+  })
+  return fileIds
+})
+
+const folderGroupIds = computed(() => {
+  if (!store.selectedFolderNodeId) return null
+  const allIds = getFolderDescendantIds(store.selectedFolderNodeId)
+  allIds.add(store.selectedFolderNodeId)
+  // All directory nodes in the subtree
+  const groupIds = new Set()
+  allIds.forEach(id => {
+    const n = store.nodes.find(n => n.id === id)
+    if (n && n.type === 'directory') groupIds.add(id)
+  })
+  return groupIds
+})
+
+// Auto-fit view when folder filter changes
+watch(() => store.selectedFolderNodeId, async (id) => {
+  if (!id) return
+  const allIds = getFolderDescendantIds(id)
+  allIds.add(id)
+  const nodeIds = [...allIds]
+  if (nodeIds.length === 0) return
+  await nextTick()
+  fitView({ nodes: nodeIds, padding: 0.25, duration: 400 })
+})
+
 const isRefreshing = ref(false)
 
 async function refreshGraph() {
@@ -238,16 +290,32 @@ const flowNodes = computed(() => {
   const connectedGroups = connectedGroupIds.value
   const searched = contentSearchEnabled.value ? contentMatchIds.value : searchMatchIds.value
   const searchedGroups = contentSearchEnabled.value ? contentGroupIds.value : searchGroupIds.value
+  const folderNodes = folderFilterNodeIds.value
+  const folderGroups = folderGroupIds.value
 
-  // Build effective filter: union when both search + focus are active
+  // Combine search and folder filter (intersect when both active, otherwise use whichever is set)
+  let baseNodes = null
+  let baseGroups = null
+  if (searched && folderNodes) {
+    baseNodes = new Set([...searched].filter(id => folderNodes.has(id)))
+    baseGroups = new Set([...(searchedGroups || [])].filter(id => (folderGroups || new Set()).has(id)))
+  } else if (searched) {
+    baseNodes = searched
+    baseGroups = searchedGroups
+  } else if (folderNodes) {
+    baseNodes = folderNodes
+    baseGroups = folderGroups
+  }
+
+  // Build effective filter: union when node focus + base filter are both active
   let visibleNodes = null
   let visibleGroups = null
-  if (searched && connected) {
-    visibleNodes = new Set([...searched, ...connected])
-    visibleGroups = new Set([...(searchedGroups || []), ...(connectedGroups || [])])
-  } else if (searched) {
-    visibleNodes = searched
-    visibleGroups = searchedGroups
+  if (baseNodes && connected) {
+    visibleNodes = new Set([...baseNodes, ...connected])
+    visibleGroups = new Set([...(baseGroups || []), ...(connectedGroups || [])])
+  } else if (baseNodes) {
+    visibleNodes = baseNodes
+    visibleGroups = baseGroups
   } else if (connected) {
     visibleNodes = connected
     visibleGroups = connectedGroups
