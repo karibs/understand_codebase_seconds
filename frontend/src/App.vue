@@ -42,6 +42,9 @@ function backToAnalysis() {
         <span class="app-subtitle">Project Analyzer</span>
       </div>
       <div class="header-actions">
+        <button v-if="currentView === 'analysis'" class="btn btn-back" @click="goToLanding">
+          &#x2190; Home
+        </button>
         <button v-if="currentView === 'workflow'" class="btn btn-back" @click="backToAnalysis">
           &#x2190; New Analysis
         </button>

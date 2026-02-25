@@ -15,6 +15,20 @@ const { fitView, getViewport, setViewport } = useVueFlow()
 const focusPositions = ref(null)   // null or { [nodeId]: {x, y} } — absolute positions for circle
 const savedViewport = ref(null)    // saved {x, y, zoom} before focus
 
+const isRefreshing = ref(false)
+
+async function refreshGraph() {
+  if (!store.analysisPath || isRefreshing.value) return
+  isRefreshing.value = true
+  try {
+    await store.analyzeProject(store.analysisPath)
+    await nextTick()
+    fitView({ padding: 0.2, duration: 400 })
+  } finally {
+    isRefreshing.value = false
+  }
+}
+
 const searchQuery = ref('')
 const contentSearchEnabled = ref(false)
 const contentMatchFiles = ref(null)
@@ -374,6 +388,20 @@ onMounted(() => {
         position="bottom-right"
       />
 
+      <!-- Refresh button -->
+      <div class="graph-refresh">
+        <button
+          class="refresh-btn"
+          :class="{ spinning: isRefreshing }"
+          :disabled="isRefreshing"
+          title="Re-read files and rebuild graph"
+          @click="refreshGraph"
+        >
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/><path d="M8 16H3v5"/></svg>
+          {{ isRefreshing ? 'Refreshing...' : 'Refresh' }}
+        </button>
+      </div>
+
       <!-- Node search -->
       <div class="node-search">
         <div class="search-input-wrap">
@@ -614,10 +642,53 @@ function getMinimapNodeColor(node) {
   border-color: var(--text-secondary);
 }
 
+/* Refresh button */
+.graph-refresh {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  z-index: 10;
+}
+
+.refresh-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 0.4rem 0.875rem;
+  background: var(--bg-tertiary);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  color: var(--text-secondary);
+  font-size: 0.75rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+
+.refresh-btn:hover:not(:disabled) {
+  border-color: #6366F1;
+  color: #818CF8;
+  background: rgba(99, 102, 241, 0.08);
+}
+
+.refresh-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.refresh-btn.spinning svg {
+  animation: refresh-spin 0.8s linear infinite;
+}
+
+@keyframes refresh-spin {
+  to { transform: rotate(360deg); }
+}
+
 /* Node search */
 .node-search {
   position: absolute;
-  top: 1rem;
+  top: 3.25rem;
   right: 1rem;
   z-index: 10;
 }

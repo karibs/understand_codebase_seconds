@@ -49,10 +49,16 @@ function confirmDownload() {
           Start Analyzing
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
         </button>
-        <button class="btn-download" @click="openDownloadModal">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-          Download Backend
-        </button>
+        <div class="download-group">
+          <button class="btn-download" @click="openDownloadModal">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            Download Backend
+          </button>
+          <div class="download-callout">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
+            Download &amp; run this first — required to scan your local files
+          </div>
+        </div>
       </div>
     </section>
 
@@ -359,6 +365,39 @@ function confirmDownload() {
 .btn-download:hover {
   border-color: #6366F1;
   background: #F8F7FF;
+}
+
+.download-group {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.download-callout {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 0.4rem 0.875rem;
+  background: linear-gradient(135deg, rgba(251, 191, 36, 0.12), rgba(245, 158, 11, 0.08));
+  border: 1.5px solid rgba(251, 191, 36, 0.5);
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #92400E;
+  white-space: nowrap;
+  position: relative;
+  animation: pulse-callout 2.5s ease-in-out infinite;
+}
+
+.download-callout svg {
+  color: #D97706;
+  flex-shrink: 0;
+}
+
+@keyframes pulse-callout {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(251, 191, 36, 0); }
+  50% { box-shadow: 0 0 0 4px rgba(251, 191, 36, 0.2); }
 }
 
 /* ---------- Ad Slots ---------- */
