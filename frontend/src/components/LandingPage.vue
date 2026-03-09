@@ -134,14 +134,213 @@ function confirmDownload() {
       </div>
     </section>
 
+    <!-- Supported Technologies -->
+    <section class="tech-section" id="technologies">
+      <h2 class="section-title">Supported Technologies</h2>
+      <p class="section-desc">
+        Architect automatically detects the frameworks and languages in your project.
+        No configuration needed — just point it at a folder.
+      </p>
+      <div class="tech-grid">
+        <span class="tech-badge">JavaScript</span>
+        <span class="tech-badge">TypeScript</span>
+        <span class="tech-badge">Python</span>
+        <span class="tech-badge">Vue.js</span>
+        <span class="tech-badge">React</span>
+        <span class="tech-badge">Angular</span>
+        <span class="tech-badge">Node.js</span>
+        <span class="tech-badge">Flask</span>
+        <span class="tech-badge">FastAPI</span>
+        <span class="tech-badge">Django</span>
+        <span class="tech-badge">Next.js</span>
+        <span class="tech-badge">Nuxt.js</span>
+        <span class="tech-badge">Go</span>
+        <span class="tech-badge">Rust</span>
+        <span class="tech-badge">Java</span>
+        <span class="tech-badge">C#</span>
+        <span class="tech-badge">Ruby</span>
+        <span class="tech-badge">PHP</span>
+        <span class="tech-badge">Swift</span>
+        <span class="tech-badge">Kotlin</span>
+        <span class="tech-badge">Dart / Flutter</span>
+        <span class="tech-badge">C / C++</span>
+      </div>
+    </section>
+
+    <!-- Use Cases -->
+    <section class="usecases-section" id="use-cases">
+      <h2 class="section-title">Who Uses Architect?</h2>
+      <div class="usecases-grid">
+        <div class="usecase-card">
+          <div class="usecase-icon">&#x1F4BB;</div>
+          <h3>Developers Onboarding to a New Codebase</h3>
+          <p>
+            Get oriented to an unfamiliar project in minutes. See how files
+            relate to each other, which folders contain business logic, and
+            how the frontend connects to the backend — without reading every
+            file manually.
+          </p>
+        </div>
+        <div class="usecase-card">
+          <div class="usecase-icon">&#x1F4CA;</div>
+          <h3>Tech Leads Reviewing Large Pull Requests</h3>
+          <p>
+            Understand which modules a pull request touches before diving in.
+            Spot architectural inconsistencies, trace dependency chains, and
+            review with full context of the overall project structure.
+          </p>
+        </div>
+        <div class="usecase-card">
+          <div class="usecase-icon">&#x1F527;</div>
+          <h3>Freelancers Scoping Legacy Projects</h3>
+          <p>
+            Quickly size up inherited codebases you've never seen. Count
+            components, detect the tech stack, and deliver accurate estimates
+            to clients — without spending hours browsing a file tree manually.
+          </p>
+        </div>
+      </div>
+    </section>
+
     <!-- Ad Slot #2 -->
     <div class="ad-slot">
-      <!-- Google AdSense -->
+      <!-- Google AdSense ad unit goes here -->
     </div>
+
+    <!-- FAQ -->
+    <section class="faq-section" id="faq">
+      <h2 class="section-title">Frequently Asked Questions</h2>
+      <div class="faq-list">
+        <div class="faq-item">
+          <h3 class="faq-q">Do I need an internet connection to use Architect?</h3>
+          <p class="faq-a">
+            The web interface requires an internet connection to load in your browser.
+            However, all file analysis runs entirely on your local machine through the
+            downloaded backend server. Your project files never leave your computer.
+          </p>
+        </div>
+        <div class="faq-item">
+          <h3 class="faq-q">What operating systems are supported?</h3>
+          <p class="faq-a">
+            The Architect backend runs on Windows, macOS, and Linux. Any system with
+            Python 3.10 or later installed is supported. Platform-specific start scripts
+            (<code>start.bat</code> for Windows, <code>start.sh</code> for macOS/Linux)
+            are included in the download.
+          </p>
+        </div>
+        <div class="faq-item">
+          <h3 class="faq-q">Is there a project size limit?</h3>
+          <p class="faq-a">
+            There is no hard limit. Architect is designed to handle projects with
+            thousands of files efficiently. Analysis time depends on local hardware,
+            but most projects — including large monorepos — complete in just a few seconds.
+          </p>
+        </div>
+        <div class="faq-item">
+          <h3 class="faq-q">Does Architect send my code to the cloud?</h3>
+          <p class="faq-a">
+            No. The backend server runs entirely on <code>localhost</code> and makes
+            no outbound network requests. Your source code, file names, and project
+            structure remain on your machine at all times. No third-party service
+            ever processes your files.
+          </p>
+        </div>
+        <div class="faq-item">
+          <h3 class="faq-q">Can I use Architect with private or proprietary code?</h3>
+          <p class="faq-a">
+            Yes. Because all analysis happens locally, Architect is safe to use on
+            confidential or proprietary codebases. There is no account creation,
+            no telemetry, and no cloud upload — ever.
+          </p>
+        </div>
+        <div class="faq-item">
+          <h3 class="faq-q">How does the graph visualization work?</h3>
+          <p class="faq-a">
+            Architect parses your project's file tree and dependency manifests
+            (such as <code>package.json</code>, <code>requirements.txt</code>,
+            or <code>go.mod</code>) to build a graph of nodes (files and folders)
+            and edges (imports and relationships). The result is rendered in your
+            browser as an interactive, pannable, and zoomable node graph.
+          </p>
+        </div>
+        <div class="faq-item">
+          <h3 class="faq-q">Is Architect free?</h3>
+          <p class="faq-a">
+            Yes, Architect is completely free to use. The web interface is hosted
+            at no cost, and the backend you download is free to inspect and run.
+            No subscription, no sign-up, and no payment is required.
+          </p>
+        </div>
+        <div class="faq-item">
+          <h3 class="faq-q">What Python version do I need?</h3>
+          <p class="faq-a">
+            Python 3.10 or newer is required to run the backend. If you don't
+            have Python installed, download it from
+            <a href="https://www.python.org/downloads/" target="_blank" rel="noopener">python.org</a>.
+            The start script will automatically install all required packages
+            on first run using <code>pip</code>.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Privacy Policy -->
+    <section class="privacy-section" id="privacy">
+      <div class="privacy-inner">
+        <h2 class="privacy-title">Privacy Policy</h2>
+        <p>
+          Architect ("the Service") is a browser-based tool that helps you
+          visualize and understand local software projects. This privacy
+          policy describes how we handle information in connection with the
+          Service.
+        </p>
+        <h3>Information We Collect</h3>
+        <p>
+          The Architect web interface does not collect, store, or transmit
+          any personal data or project files. The local backend agent that
+          you download and run on your computer reads files from directories
+          you explicitly select. This data is processed entirely on your
+          machine and is never sent to any remote server.
+        </p>
+        <p>
+          We use standard web server access logs which may record your IP
+          address, browser type, and pages visited. This information is used
+          solely for operating and improving the Service and is never sold to
+          third parties.
+        </p>
+        <h3>Cookies &amp; Third-Party Advertising</h3>
+        <p>
+          This site may display advertisements served by Google AdSense.
+          Google may use cookies to show ads based on your prior visits to
+          this and other websites. You can opt out of personalized advertising
+          by visiting
+          <a href="https://www.google.com/settings/ads" target="_blank" rel="noopener">Google Ads Settings</a>.
+          We do not control the content of third-party advertisements.
+        </p>
+        <h3>Contact</h3>
+        <p>
+          If you have questions about this privacy policy, please open an
+          issue in the project repository or contact us through the site.
+        </p>
+      </div>
+    </section>
 
     <!-- Footer -->
     <footer class="landing-footer">
-      <p>&copy; 2026 Architect &mdash; Project Analyzer</p>
+      <div class="footer-inner">
+        <div class="footer-brand">
+          <span class="logo-mark logo-sm">A</span>
+          <span class="footer-brand-name">Architect</span>
+        </div>
+        <p class="footer-tagline">Free, local-first project analysis and visualization.</p>
+        <nav class="footer-nav" aria-label="Footer navigation">
+          <a href="#technologies">Technologies</a>
+          <a href="#use-cases">Use Cases</a>
+          <a href="#faq">FAQ</a>
+          <a href="#privacy">Privacy Policy</a>
+        </nav>
+        <p class="footer-copy">&copy; 2026 Architect — Project Analyzer. All rights reserved.</p>
+      </div>
     </footer>
 
     <!-- Download Modal -->
@@ -406,15 +605,10 @@ function confirmDownload() {
   width: 100%;
   margin: 1.5rem auto;
   padding: 0 2rem;
-}
-
-.ad-slot::before {
-  content: '';
-  display: block;
   min-height: 90px;
-  border: 1.5px dashed #E2E8F0;
-  border-radius: 12px;
-  background: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 /* ---------- Feature Cards ---------- */
@@ -552,11 +746,9 @@ function confirmDownload() {
 /* ---------- Footer ---------- */
 .landing-footer {
   margin-top: auto;
-  padding: 2rem;
-  text-align: center;
-  color: #94A3B8;
-  font-size: 0.8125rem;
+  padding: 2.5rem 2rem;
   border-top: 1px solid #F1F5F9;
+  background: #fff;
 }
 
 /* ---------- Modal ---------- */
@@ -718,6 +910,250 @@ function confirmDownload() {
   box-shadow: 0 6px 20px rgba(99, 102, 241, 0.4);
 }
 
+/* ---------- Technologies ---------- */
+.tech-section {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 3rem 2rem;
+  text-align: center;
+}
+
+.section-desc {
+  font-size: 1rem;
+  color: #64748B;
+  max-width: 560px;
+  margin: -1.5rem auto 2rem;
+  line-height: 1.7;
+}
+
+.tech-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.625rem;
+  justify-content: center;
+}
+
+.tech-badge {
+  padding: 0.4rem 1rem;
+  background: #fff;
+  border: 1.5px solid #E2E8F0;
+  border-radius: 20px;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: #334155;
+  transition: border-color 0.2s, color 0.2s;
+}
+
+.tech-badge:hover {
+  border-color: #6366F1;
+  color: #6366F1;
+}
+
+/* ---------- Use Cases ---------- */
+.usecases-section {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 2rem 2rem 3rem;
+}
+
+.usecases-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.25rem;
+  margin-top: 0;
+}
+
+.usecase-card {
+  background: #fff;
+  border: 1px solid #F1F5F9;
+  border-radius: 16px;
+  padding: 2rem 1.5rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+}
+
+.usecase-icon {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+}
+
+.usecase-card h3 {
+  font-size: 0.9375rem;
+  font-weight: 700;
+  color: #1a1a2e;
+  margin-bottom: 0.625rem;
+  line-height: 1.4;
+}
+
+.usecase-card p {
+  font-size: 0.875rem;
+  color: #64748B;
+  line-height: 1.65;
+}
+
+/* ---------- FAQ ---------- */
+.faq-section {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 3rem 2rem;
+}
+
+.faq-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.faq-item {
+  background: #fff;
+  border: 1px solid #F1F5F9;
+  border-radius: 14px;
+  padding: 1.5rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+}
+
+.faq-q {
+  font-size: 0.9375rem;
+  font-weight: 700;
+  color: #1a1a2e;
+  margin-bottom: 0.625rem;
+  line-height: 1.4;
+}
+
+.faq-a {
+  font-size: 0.875rem;
+  color: #475569;
+  line-height: 1.7;
+}
+
+.faq-a code {
+  background: #F1F5F9;
+  padding: 0.1rem 0.375rem;
+  border-radius: 4px;
+  font-size: 0.8rem;
+  color: #6366F1;
+}
+
+.faq-a a {
+  color: #6366F1;
+  text-decoration: underline;
+  text-decoration-color: rgba(99, 102, 241, 0.3);
+}
+
+.faq-a a:hover {
+  text-decoration-color: #6366F1;
+}
+
+/* ---------- Privacy ---------- */
+.privacy-section {
+  background: #F8FAFC;
+  border-top: 1px solid #F1F5F9;
+  border-bottom: 1px solid #F1F5F9;
+  padding: 3rem 2rem;
+  margin-top: 2rem;
+}
+
+.privacy-inner {
+  max-width: 760px;
+  margin: 0 auto;
+}
+
+.privacy-title {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: #1a1a2e;
+  margin-bottom: 1rem;
+  letter-spacing: -0.02em;
+}
+
+.privacy-section h3 {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #334155;
+  margin: 1.5rem 0 0.5rem;
+}
+
+.privacy-section p {
+  font-size: 0.875rem;
+  color: #475569;
+  line-height: 1.75;
+  margin-bottom: 0.5rem;
+}
+
+.privacy-section a {
+  color: #6366F1;
+  text-decoration: underline;
+  text-decoration-color: rgba(99, 102, 241, 0.3);
+}
+
+.privacy-section a:hover {
+  text-decoration-color: #6366F1;
+}
+
+/* ---------- Footer ---------- */
+.footer-inner {
+  max-width: 960px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+  text-align: center;
+}
+
+.footer-brand {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.logo-sm {
+  width: 28px;
+  height: 28px;
+  border-radius: 8px;
+  background: linear-gradient(135deg, #6366F1, #8B5CF6);
+  color: #fff;
+  font-size: 0.875rem;
+  font-weight: 800;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.footer-brand-name {
+  font-size: 1rem;
+  font-weight: 800;
+  color: #1a1a2e;
+}
+
+.footer-tagline {
+  font-size: 0.8125rem;
+  color: #94A3B8;
+}
+
+.footer-nav {
+  display: flex;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.footer-nav a {
+  font-size: 0.8125rem;
+  color: #64748B;
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.2s;
+}
+
+.footer-nav a:hover {
+  color: #6366F1;
+}
+
+.footer-copy {
+  font-size: 0.75rem;
+  color: #CBD5E1;
+}
+
 /* ---------- Responsive ---------- */
 @media (max-width: 768px) {
   .hero {
@@ -754,6 +1190,21 @@ function confirmDownload() {
     border-top: none;
     border-left: 2px dashed #CBD5E1;
     margin-top: 0;
+  }
+
+  .usecases-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .tech-section,
+  .usecases-section,
+  .faq-section {
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+  }
+
+  .footer-nav {
+    gap: 1rem;
   }
 }
 </style>
