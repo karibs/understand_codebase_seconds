@@ -11,5 +11,126 @@
 <body>
   <div id="app"></div>
   <script type="module" src="/src/main.js"></script>
+
+  <!-- Static content for search engines and ad bots that do not execute JavaScript -->
+  <noscript>
+    <div style="font-family:Inter,sans-serif;max-width:960px;margin:0 auto;padding:2rem;color:#1a1a2e;">
+      <h1>Architect — Project Analyzer</h1>
+      <p>
+        Architect is a free, browser-based tool that helps developers understand any codebase in seconds.
+        Point it at a local project folder and instantly get an interactive graph of your file structure,
+        automatic framework detection, and in-browser source code preview — all without uploading anything
+        to the cloud.
+      </p>
+
+      <h2>Key Features</h2>
+      <h3>Structure Analysis</h3>
+      <p>
+        Automatically detect frameworks, programming languages, and project architecture from the file tree.
+        Architect inspects your directory layout and dependency manifests to give you an instant overview
+        of what the project is built with.
+      </p>
+      <h3>Interactive Graph Visualization</h3>
+      <p>
+        See your entire project rendered as a pannable, zoomable node graph. Files and folders appear as
+        nodes; import relationships and folder membership are shown as edges. Drill down into any part of
+        the graph to understand how components connect.
+      </p>
+      <h3>In-Browser Code Preview</h3>
+      <p>
+        Click any node in the graph to open the corresponding source file right in your browser, with
+        syntax highlighting and line numbers. No IDE required.
+      </p>
+
+      <h2>How It Works</h2>
+      <ol>
+        <li>
+          <strong>Download &amp; Run the Backend.</strong>
+          Download the lightweight Python backend package, unzip it, and run the included start script
+          (<code>start.bat</code> on Windows or <code>start.sh</code> on macOS/Linux). The server starts
+          on <code>localhost:5000</code> and requires Python 3.10 or later.
+        </li>
+        <li>
+          <strong>Enter Your Project Path.</strong>
+          In the Architect web interface, type or paste the path to the local project folder you want to
+          analyze, then click Analyze.
+        </li>
+        <li>
+          <strong>Explore the Graph.</strong>
+          Browse the interactive workflow graph, click file nodes to preview source code, and gain a clear
+          picture of your codebase — all in seconds.
+        </li>
+      </ol>
+
+      <h2>Supported Technologies</h2>
+      <p>
+        Architect automatically detects the following frameworks and languages with no configuration:
+        JavaScript, TypeScript, Python, Vue.js, React, Angular, Node.js, Flask, FastAPI, Django,
+        Next.js, Nuxt.js, Go, Rust, Java, C#, Ruby, PHP, Swift, Kotlin, Dart / Flutter, C, C++.
+      </p>
+
+      <h2>Who Uses Architect?</h2>
+      <h3>Developers Onboarding to a New Codebase</h3>
+      <p>
+        Get oriented to an unfamiliar project in minutes. See how files relate to each other, which
+        folders contain business logic, and how the frontend connects to the backend — without reading
+        every file manually.
+      </p>
+      <h3>Tech Leads Reviewing Large Pull Requests</h3>
+      <p>
+        Understand which modules a pull request touches before diving in. Spot architectural
+        inconsistencies, trace dependency chains, and review with full context of the overall project
+        structure.
+      </p>
+      <h3>Freelancers Scoping Legacy Projects</h3>
+      <p>
+        Quickly size up inherited codebases you have never seen. Count components, detect the tech stack,
+        and deliver accurate estimates to clients — without spending hours browsing a file tree manually.
+      </p>
+
+      <h2>Frequently Asked Questions</h2>
+      <h3>Do I need an internet connection to use Architect?</h3>
+      <p>
+        The web interface requires an internet connection to load in your browser. However, all file
+        analysis runs entirely on your local machine through the downloaded backend server. Your project
+        files never leave your computer.
+      </p>
+      <h3>What operating systems are supported?</h3>
+      <p>
+        The Architect backend runs on Windows, macOS, and Linux. Any system with Python 3.10 or later
+        installed is supported. Platform-specific start scripts are included in the download.
+      </p>
+      <h3>Is there a project size limit?</h3>
+      <p>
+        There is no hard limit. Architect is designed to handle projects with thousands of files
+        efficiently. Most projects — including large monorepos — complete analysis in just a few seconds.
+      </p>
+      <h3>Does Architect send my code to the cloud?</h3>
+      <p>
+        No. The backend server runs entirely on localhost and makes no outbound network requests. Your
+        source code, file names, and project structure remain on your machine at all times.
+      </p>
+      <h3>Can I use Architect with private or proprietary code?</h3>
+      <p>
+        Yes. Because all analysis happens locally, Architect is safe to use on confidential or proprietary
+        codebases. There is no account creation, no telemetry, and no cloud upload — ever.
+      </p>
+      <h3>How does the graph visualization work?</h3>
+      <p>
+        Architect parses your project's file tree and dependency manifests (such as package.json,
+        requirements.txt, or go.mod) to build a graph of nodes and edges. The result is rendered in your
+        browser as an interactive, pannable, and zoomable node graph.
+      </p>
+      <h3>Is Architect free?</h3>
+      <p>
+        Yes, Architect is completely free to use. No subscription, no sign-up, and no payment is required.
+      </p>
+      <h3>What Python version do I need?</h3>
+      <p>
+        Python 3.10 or newer is required. The start script automatically installs all required packages
+        on first run using pip.
+      </p>
+    </div>
+  </noscript>
 </body>
 </html>
