@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>리버모어 박스권 이론 시각화 — Jesse Livermore Box Theory</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Segoe UI', sans-serif; background: #0f172a; color: #e2e8f0; min-height: 100vh; }
+
+    /* ── 배너 ── */
+    .banner-edu {
+      background: linear-gradient(135deg, #1e3a5f, #1e40af);
+      padding: 12px 20px;
+      text-align: center;
+      font-size: 0.85rem;
+      color: #bfdbfe;
+      border-bottom: 1px solid #2563eb;
+    }
+    .banner-delay {
+      background: #78350f;
+      padding: 8px 20px;
+      text-align: center;
+      font-size: 0.82rem;
+      color: #fde68a;
+      border-bottom: 1px solid #d97706;
+    }
+
+    /* ── AdSense 자리 ── */
+    .adsense-slot {
+      width: 100%;
+      min-height: 90px;
+      background: #1e293b;
+      border: 1px dashed #334155;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #475569;
+      font-size: 0.75rem;
+    }
+
+    /* ── 헤더 ── */
+    header {
+      text-align: center;
+      padding: 32px 20px 20px;
+      border-bottom: 1px solid #1e293b;
+    }
+    header h1 {
+      font-size: clamp(1.2rem, 4vw, 1.8rem);
+      color: #f1f5f9;
+      font-weight: 700;
+    }
+    header p {
+      margin-top: 8px;
+      color: #94a3b8;
+      font-size: 0.88rem;
+      max-width: 640px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    /* ── 입력 영역 ── */
+    .input-section {
+      max-width: 640px;
+      margin: 24px auto;
+      padding: 0 16px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      align-items: flex-end;
+    }
+    .input-group {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      flex: 1;
+      min-width: 140px;
+    }
+    .input-group label {
+      font-size: 0.78rem;
+      color: #94a3b8;
+    }
+    .input-group input {
+      background: #1e293b;
+      border: 1px solid #334155;
+      color: #f1f5f9;
+      padding: 10px 12px;
+      border-radius: 8px;
+      font-size: 0.95rem;
+      outline: none;
+      transition: border-color .2s;
+    }
+    .input-group input:focus { border-color: #3b82f6; }
+    .btn-fetch {
+      background: #2563eb;
+      color: #fff;
+      border: none;
+      padding: 10px 24px;
+      border-radius: 8px;
+      font-size: 0.95rem;
+      cursor: pointer;
+      font-weight: 600;
+      transition: background .2s;
+      white-space: nowrap;
+    }
+    .btn-fetch:hover { background: #1d4ed8; }
+    .btn-fetch:disabled { background: #475569; cursor: default; }
+
+    /* ── 메인 카드 ── */
+    .card {
+      max-width: 640px;
+      margin: 0 auto 24px;
+      padding: 0 16px;
+    }
+    .card-inner {
+      background: #1e293b;
+      border-radius: 16px;
+      padding: 24px;
+      border: 1px solid #334155;
+    }
+
+    /* ── 상태 뱃지 ── */
+    .status-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 16px;
+      border-radius: 999px;
+      font-size: 1rem;
+      font-weight: 700;
+      margin-bottom: 20px;
+    }
+    .status-badge.pivot  { background: #14532d; color: #86efac; border: 1px solid #22c55e; }
+    .status-badge.box    { background: #713f12; color: #fde68a; border: 1px solid #f59e0b; }
+    .status-badge.warn   { background: #7c2d12; color: #fdba74; border: 1px solid #f97316; }
+    .status-badge.break  { background: #450a0a; color: #fca5a5; border: 1px solid #ef4444; }
+    .status-badge.idle   { background: #1e293b; color: #94a3b8; border: 1px solid #475569; }
+    .status-theory { font-size: 0.7rem; color: #94a3b8; margin-left: 4px; }
+
+    /* ── 게이지 ── */
+    .gauge-wrap {
+      display: flex;
+      gap: 16px;
+      align-items: stretch;
+      margin: 16px 0;
+    }
+    .gauge-bar {
+      width: 28px;
+      border-radius: 14px;
+      background: #0f172a;
+      position: relative;
+      flex-shrink: 0;
+      border: 1px solid #334155;
+      min-height: 200px;
+    }
+    .gauge-fill-top    { position: absolute; top: 0; left: 0; right: 0; background: #166534; border-radius: 14px 14px 0 0; }
+    .gauge-fill-bottom { position: absolute; bottom: 0; left: 0; right: 0; background: #7f1d1d; border-radius: 0 0 14px 14px; }
+    .gauge-marker {
+      position: absolute;
+      left: -6px; right: -6px;
+      height: 4px;
+      background: #f1f5f9;
+      border-radius: 2px;
+      transition: top .5s ease;
+      box-shadow: 0 0 8px #f1f5f9;
+    }
+    .gauge-labels {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      font-size: 0.75rem;
+      flex: 1;
+    }
+    .gauge-label { display: flex; align-items: center; gap: 6px; }
+    .gauge-label .dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+    .gauge-label .val { font-weight: 600; color: #f1f5f9; }
+    .gauge-label .name { color: #94a3b8; }
+    .gauge-label .tip  { font-size: 0.68rem; color: #475569; margin-top: 2px; }
+
+    /* ── 수치 그리드 ── */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+      gap: 12px;
+      margin-top: 20px;
+    }
+    .stat-box {
+      background: #0f172a;
+      border: 1px solid #1e293b;
+      border-radius: 10px;
+      padding: 12px;
+    }
+    .stat-box .s-label { font-size: 0.72rem; color: #64748b; margin-bottom: 4px; }
+    .stat-box .s-val   { font-size: 1.1rem; font-weight: 700; color: #f1f5f9; }
+    .stat-box .s-val.green { color: #86efac; }
+    .stat-box .s-val.red   { color: #fca5a5; }
+    .stat-box .s-val.yellow{ color: #fde68a; }
+
+    /* ── 트레일링 스톱 ── */
+    .trailing-box {
+      margin-top: 16px;
+      background: #0f172a;
+      border: 1px solid #334155;
+      border-radius: 10px;
+      padding: 14px;
+    }
+    .trailing-box h4 { font-size: 0.82rem; color: #94a3b8; margin-bottom: 8px; }
+    .trailing-row { display: flex; justify-content: space-between; font-size: 0.85rem; padding: 4px 0; }
+    .trailing-row .t-label { color: #64748b; }
+    .trailing-row .t-val   { font-weight: 600; color: #f1f5f9; }
+
+    /* ── 장 시간 안내 ── */
+    .market-notice {
+      margin-top: 12px;
+      background: #1e293b;
+      border: 1px solid #334155;
+      border-radius: 8px;
+      padding: 10px 14px;
+      font-size: 0.8rem;
+      color: #94a3b8;
+      text-align: center;
+    }
+
+    /* ── 카운트다운 ── */
+    .refresh-bar {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 8px;
+      font-size: 0.75rem;
+      color: #475569;
+      margin-top: 12px;
+    }
+    .refresh-dot { width: 8px; height: 8px; border-radius: 50%; background: #22c55e; animation: pulse 1s infinite; }
+    @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.4} }
+
+    /* ── 에러 ── */
+    .error-msg {
+      text-align: center;
+      color: #fca5a5;
+      padding: 24px;
+      font-size: 0.9rem;
+    }
+    .loading-msg {
+      text-align: center;
+      color: #94a3b8;
+      padding: 24px;
+      font-size: 0.9rem;
+    }
+
+    /* ── 푸터 ── */
+    footer {
+      border-top: 1px solid #1e293b;
+      padding: 24px 20px;
+      text-align: center;
+      font-size: 0.75rem;
+      color: #475569;
+      line-height: 1.8;
+    }
+    footer strong { color: #64748b; }
+
+    @media (max-width: 480px) {
+      .gauge-wrap { flex-direction: column; }
+      .gauge-bar { width: 100%; height: 40px; min-height: unset; }
+      .gauge-fill-top    { border-radius: 14px 0 0 14px; top: 0; bottom: 0; right: unset; left: 0; width: var(--w-top); height: 100%; }
+      .gauge-fill-bottom { border-radius: 0 14px 14px 0; top: 0; bottom: 0; left: unset; right: 0; width: var(--w-bot); height: 100%; }
+      .gauge-marker { top: 50% !important; left: var(--left-m) !important; right: unset !important; width: 4px; height: calc(100% + 12px); transform: translateY(-50%); }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ■ 교육 목적 배너 -->
+<div class="banner-edu">
+  📚 본 사이트는 Jesse Livermore의 박스권 이론을 학습하기 위한 <strong>교육용 시각화 도구</strong>입니다.
+  특정 종목의 매수·매도를 권유하지 않으며, <strong>투자자문업과 무관</strong>합니다.
+</div>
+
+<!-- ■ 데이터 지연 경고 배너 -->
+<div class="banner-delay">
+  ⚠️ 본 서비스는 Yahoo Finance 기준 <strong>15분 지연 데이터</strong>를 사용합니다. 실시간 데이터가 아니므로 실제 투자에 직접 활용하지 마세요.
+</div>
+
+<!-- ADSENSE_TOP -->
+<div class="adsense-slot"><!-- AdSense 광고 영역 (상단) — 코드 삽입 후 이 주석 제거 --></div>
+<!-- /ADSENSE_TOP -->
+
+<!-- ■ 헤더 -->
+<header>
+  <h1>📈 리버모어 박스권 이론 시각화</h1>
+  <p>주식 시장의 전설적인 트레이더 Jesse Livermore의 박스권 이론을 실제 데이터로 학습하는 교육용 도구입니다.</p>
+</header>
+
+<!-- ■ 입력 영역 -->
+<div class="input-section">
+  <div class="input-group">
+    <label for="ticker">종목코드</label>
+    <input id="ticker" type="text" value="005930.KS" placeholder="예: 005930.KS, AAPL" />
+  </div>
+  <div class="input-group">
+    <label for="entry">매입단가 (선택)</label>
+    <input id="entry" type="number" placeholder="예: 72000" />
+  </div>
+  <button class="btn-fetch" id="fetchBtn" onclick="fetchData()">조회</button>
+</div>
+
+<!-- ■ 결과 카드 -->
+<div class="card">
+  <div class="card-inner" id="resultCard">
+    <div class="loading-msg" id="initMsg">종목코드를 입력하고 조회 버튼을 눌러주세요.</div>
+  </div>
+</div>
+
+<!-- ADSENSE_BOTTOM -->
+<div class="adsense-slot"><!-- AdSense 광고 영역 (하단) — 코드 삽입 후 이 주석 제거 --></div>
+<!-- /ADSENSE_BOTTOM -->
+
+<!-- ■ 푸터 -->
+<footer>
+  <p><strong>⚠️ 법적 면책 조항</strong></p>
+  <p>본 사이트는 Jesse Livermore 박스권 이론의 교육적 이해를 돕기 위한 목적으로 제작되었습니다.</p>
+  <p>본 사이트는 자본시장법상 <strong>투자자문업과 무관</strong>하며, 어떠한 종목의 매수·매도도 권유하지 않습니다.</p>
+  <p>모든 투자 판단과 그에 따른 손익의 책임은 <strong>전적으로 투자자 본인</strong>에게 있습니다.</p>
+  <p>데이터 출처: Yahoo Finance (15분 지연) / 본 사이트는 Yahoo Finance와 무관합니다.</p>
+</footer>
+
+<script>
+  const PROXY = 'https://corsproxy.io/?';
+  const YF_BASE = 'https://query1.finance.yahoo.com/v8/finance/chart/';
+
+  let refreshTimer = null;
+  let countdown = 60;
+  let sessionHigh = null;
+  let pivotBroken = false;
+
+  /* ─── 퍼센타일 ─── */
+  function percentile(arr, p) {
+    const sorted = [...arr].sort((a, b) => a - b);
+    const idx = (p / 100) * (sorted.length - 1);
+    const lo = Math.floor(idx), hi = Math.ceil(idx);
+    return sorted[lo] + (sorted[hi] - sorted[lo]) * (idx - lo);
+  }
+
+  /* ─── 장 시간 체크 (KRX: 09:00~15:30 KST) ─── */
+  function isMarketOpen(ticker) {
+    const now = new Date();
+    const isKR = ticker.endsWith('.KS') || ticker.endsWith('.KQ');
+    if (isKR) {
+      const kst = new Date(now.toLocaleString('en-US', { timeZone: 'Asia/Seoul' }));
+      const h = kst.getHours(), m = kst.getMinutes();
+      const minutes = h * 60 + m;
+      return minutes >= 540 && minutes <= 930; /* 09:00~15:30 */
+    }
+    /* 미국 주식: 09:30~16:00 EST */
+    const est = new Date(now.toLocaleString('en-US', { timeZone: 'America/New_York' }));
+    const h = est.getHours(), m = est.getMinutes();
+    const minutes = h * 60 + m;
+    return minutes >= 570 && minutes <= 960;
+  }
+
+  /* ─── 숫자 포맷 ─── */
+  function fmt(n, d = 0) {
+    if (n == null || isNaN(n)) return '—';
+    return n.toLocaleString('ko-KR', { minimumFractionDigits: d, maximumFractionDigits: d });
+  }
+  function fmtPct(n) { if (n == null || isNaN(n)) return '—'; const sign = n >= 0 ? '+' : ''; return sign + n.toFixed(2) + '%'; }
+
+  /* ─── 트레일링 스톱 기준 계산 ─── */
+  function trailingStopPct(returnPct) {
+    if (returnPct < 7)  return null;   /* 피벗 밑으로 내려오면 즉시 */
+    if (returnPct < 15) return 3;
+    if (returnPct < 25) return 7;
+    return 10;
+  }
+
+  /* ─── 메인 조회 ─── */
+  async function fetchData() {
+    const ticker = document.getElementById('ticker').value.trim().toUpperCase();
+    const entryInput = document.getElementById('entry').value.trim();
+    const entryPrice = entryInput ? parseFloat(entryInput) : null;
+    if (!ticker) { showError('종목코드를 입력해주세요.'); return; }
+
+    const btn = document.getElementById('fetchBtn');
+    btn.disabled = true;
+    btn.textContent = '조회 중…';
+
+    showLoading();
+    clearInterval(refreshTimer);
+    sessionHigh = null;
+    pivotBroken = false;
+
+    try {
+      /* 일봉 (2달치) */
+      const dailyUrl = `${PROXY}${YF_BASE}${encodeURIComponent(ticker)}?interval=1d&range=2mo`;
+      /* 1분봉 (오늘) */
+      const minuteUrl = `${PROXY}${YF_BASE}${encodeURIComponent(ticker)}?interval=1m&range=1d`;
+
+      const [dailyRes, minuteRes] = await Promise.all([
+        fetch(dailyUrl).then(r => r.json()),
+        fetch(minuteUrl).then(r => r.json())
+      ]);
+
+      const dailyResult = dailyRes?.chart?.result?.[0];
+      const minuteResult = minuteRes?.chart?.result?.[0];
+
+      if (!dailyResult) throw new Error('일봉 데이터를 가져오지 못했습니다.');
+
+      /* 최근 20거래일 */
+      const highs  = (dailyResult.indicators?.quote?.[0]?.high  || []).filter(Boolean);
+      const lows   = (dailyResult.indicators?.quote?.[0]?.low   || []).filter(Boolean);
+      const vols   = (dailyResult.indicators?.quote?.[0]?.volume|| []).filter(Boolean);
+      const recent20H = highs.slice(-20);
+      const recent20L = lows.slice(-20);
+      const recent20V = vols.slice(-20);
+
+      const boxTop    = percentile(recent20H, 95);
+      const boxBottom = percentile(recent20L, 5);
+      const avg20Vol  = recent20V.reduce((a, b) => a + b, 0) / recent20V.length;
+
+      /* 현재가 (1분봉 마지막 종가) */
+      const minuteQuote = minuteResult?.indicators?.quote?.[0];
+      const closes = (minuteQuote?.close || []).filter(v => v != null);
+      const minuteHigh = (minuteQuote?.high || []).filter(v => v != null);
+      const minuteVol  = (minuteQuote?.volume|| []).filter(v => v != null);
+      const currentPrice = closes.length ? closes[closes.length - 1] : dailyResult.indicators.quote[0].close?.slice(-1)[0];
+      const sessionHighPrice = minuteHigh.length ? Math.max(...minuteHigh) : currentPrice;
+      const todayVol = minuteVol.reduce((a, b) => a + b, 0);
+
+      if (!currentPrice) throw new Error('현재가를 가져오지 못했습니다.');
+
+      /* 세션 고점 추적 */
+      if (sessionHigh === null || sessionHighPrice > sessionHigh) sessionHigh = sessionHighPrice;
+
+      /* 상태 판별 */
+      let status, statusClass, statusDesc;
+      const isBreakTop    = currentPrice >= boxTop;
+      const isBreakBottom = currentPrice <= boxBottom;
+      const isStrongBreak = isBreakBottom && todayVol >= avg20Vol * 5;
+
+      if (isBreakTop) {
+        pivotBroken = true;
+        status = '피벗 돌파 ▲'; statusClass = 'pivot';
+        statusDesc = '리버모어 이론: 박스권 상단 돌파 = 상승 추세 시작 신호';
+      } else if (isStrongBreak) {
+        status = '강한 하단 이탈 ↓↓'; statusClass = 'break';
+        statusDesc = '리버모어 이론: 대량거래 동반 하단 이탈 = 강한 매도 신호';
+      } else if (isBreakBottom) {
+        status = '하단 이탈 ↓'; statusClass = 'warn';
+        statusDesc = '리버모어 이론: 박스권 하단 이탈 = 위험 구간';
+      } else {
+        status = '박스권 횡보'; statusClass = 'box';
+        statusDesc = '리버모어 이론: 박스권 내 횡보 = 관망 구간';
+      }
+
+      /* 수익률 계산 */
+      const returnPct = entryPrice ? (currentPrice - entryPrice) / entryPrice * 100 : null;
+
+      /* 게이지 위치 (0~100%) */
+      const range = boxTop - boxBottom;
+      let gaugePos = range > 0 ? (currentPrice - boxBottom) / range * 100 : 50;
+      gaugePos = Math.max(2, Math.min(98, gaugePos));
+
+      /* 트레일링 스톱 */
+      let tsStop = null, tsDesc = null, tsPct = null;
+      if (pivotBroken && entryPrice && returnPct !== null) {
+        tsPct = trailingStopPct(returnPct);
+        if (tsPct === null) {
+          tsStop = boxTop;
+          tsDesc = `피벗(${fmt(boxTop)}) 아래로 내려오면 익절 참고`;
+        } else {
+          tsStop = sessionHigh * (1 - tsPct / 100);
+          tsDesc = `세션 고점(${fmt(sessionHigh)}) 대비 -${tsPct}% → ${fmt(tsStop)}`;
+        }
+      }
+
+      /* 장 외 안내 */
+      const marketOpen = isMarketOpen(ticker);
+      const nowStr = new Date().toLocaleTimeString('ko-KR');
+
+      /* ── 렌더 ── */
+      const distTop    = ((boxTop    - currentPrice) / currentPrice * 100);
+      const distBottom = ((currentPrice - boxBottom) / currentPrice * 100);
+
+      const card = document.getElementById('resultCard');
+      card.innerHTML = `
+        <div class="status-badge ${statusClass}">
+          <span>${status}</span>
+          <span class="status-theory">(이론상 참고)</span>
+        </div>
+        <div style="font-size:0.75rem;color:#64748b;margin-bottom:12px;font-style:italic">${statusDesc}</div>
+
+        <div class="gauge-wrap">
+          <div class="gauge-bar" id="gaugeBar">
+            <div class="gauge-fill-top"    style="height:${100 - gaugePos}%"></div>
+            <div class="gauge-fill-bottom" style="height:${gaugePos < 10 ? gaugePos : 10}%"></div>
+            <div class="gauge-marker" style="top:${100 - gaugePos}%"
+                 title="현재가: ${fmt(currentPrice)}"></div>
+          </div>
+          <div class="gauge-labels">
+            <div class="gauge-label">
+              <span class="dot" style="background:#22c55e"></span>
+              <div>
+                <div><span class="name">박스권 상단 (피벗)</span></div>
+                <div><span class="val">${fmt(boxTop)}</span></div>
+                <div class="tip">리버모어 이론: 이 구간 돌파 시 상승 추세 시작 신호</div>
+              </div>
+            </div>
+            <div class="gauge-label" style="margin:auto 0">
+              <span class="dot" style="background:#f1f5f9"></span>
+              <div>
+                <div><span class="name">현재가</span></div>
+                <div><span class="val">${fmt(currentPrice)}</span></div>
+                ${returnPct !== null ? `<div class="tip" style="color:${returnPct>=0?'#86efac':'#fca5a5'}">${fmtPct(returnPct)} (매입단가 대비)</div>` : ''}
+              </div>
+            </div>
+            <div class="gauge-label">
+              <span class="dot" style="background:#ef4444"></span>
+              <div>
+                <div><span class="name">박스권 하단 (지지)</span></div>
+                <div><span class="val">${fmt(boxBottom)}</span></div>
+                <div class="tip">리버모어 이론: 이 구간 이탈 시 손절 참고 구간</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="stats-grid">
+          <div class="stat-box">
+            <div class="s-label">현재가</div>
+            <div class="s-val">${fmt(currentPrice)}</div>
+          </div>
+          ${returnPct !== null ? `
+          <div class="stat-box">
+            <div class="s-label">수익률 (이론상 참고)</div>
+            <div class="s-val ${returnPct>=0?'green':'red'}">${fmtPct(returnPct)}</div>
+          </div>` : ''}
+          <div class="stat-box">
+            <div class="s-label">상단까지 거리</div>
+            <div class="s-val ${distTop >= 0 ? 'yellow' : 'green'}">${distTop >= 0 ? '+' : ''}${distTop.toFixed(2)}%</div>
+          </div>
+          <div class="stat-box">
+            <div class="s-label">하단까지 거리</div>
+            <div class="s-val ${distBottom >= 0 ? 'yellow' : 'red'}">${distBottom.toFixed(2)}%</div>
+          </div>
+          <div class="stat-box">
+            <div class="s-label">세션 고점</div>
+            <div class="s-val">${fmt(sessionHigh)}</div>
+          </div>
+          <div class="stat-box">
+            <div class="s-label">오늘 거래량</div>
+            <div class="s-val">${todayVol >= avg20Vol * 5 ? '<span style="color:#fca5a5">⚡ </span>' : ''}${fmt(todayVol)}</div>
+          </div>
+        </div>
+
+        ${(pivotBroken && entryPrice) ? `
+        <div class="trailing-box">
+          <h4>📌 트레일링 스톱 참고 (리버모어 이론 기준, 이론상 참고)</h4>
+          <div class="trailing-row"><span class="t-label">세션 고점</span><span class="t-val">${fmt(sessionHigh)}</span></div>
+          <div class="trailing-row"><span class="t-label">익절 참고선</span><span class="t-val">${fmt(tsStop)}</span></div>
+          <div class="trailing-row"><span class="t-label">기준</span><span class="t-val" style="font-size:0.78rem;color:#94a3b8">${tsDesc}</span></div>
+          ${isBreakBottom ? `<div class="trailing-row"><span class="t-label" style="color:#fca5a5">⚠ 손절 참고선</span><span class="t-val" style="color:#fca5a5">${fmt(boxBottom)} 이탈 — 리버모어 이론상 손절 참고</span></div>` : ''}
+        </div>` : ''}
+
+        ${!marketOpen ? `<div class="market-notice">🕐 현재 장 운영 시간이 아닙니다. 데이터가 갱신되지 않을 수 있습니다.</div>` : ''}
+
+        <div class="refresh-bar">
+          <span class="refresh-dot"></span>
+          <span id="countdown">60초 후 갱신</span>
+          <span>· 마지막 갱신: ${nowStr}</span>
+        </div>
+      `;
+
+      /* 카운트다운 */
+      countdown = 60;
+      refreshTimer = setInterval(() => {
+        countdown--;
+        const el = document.getElementById('countdown');
+        if (el) el.textContent = `${countdown}초 후 갱신`;
+        if (countdown <= 0) {
+          clearInterval(refreshTimer);
+          fetchData();
+        }
+      }, 1000);
+
+    } catch (e) {
+      showError(`데이터 조회 실패: ${e.message}<br><small>종목코드가 올바른지, 네트워크 연결을 확인해주세요.</small>`);
+    } finally {
+      btn.disabled = false;
+      btn.textContent = '조회';
+    }
+  }
+
+  function showLoading() {
+    document.getElementById('resultCard').innerHTML = '<div class="loading-msg">⏳ 데이터를 불러오는 중...</div>';
+  }
+  function showError(msg) {
+    document.getElementById('resultCard').innerHTML = `<div class="error-msg">❌ ${msg}</div>`;
+  }
+
+  /* 엔터키 지원 */
+  document.addEventListener('DOMContentLoaded', () => {
+    ['ticker','entry'].forEach(id => {
+      document.getElementById(id).addEventListener('keydown', e => {
+        if (e.key === 'Enter') fetchData();
+      });
+    });
+  });
+</script>
+</body>
+</html>
