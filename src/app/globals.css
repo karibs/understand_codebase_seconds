@@ -1,0 +1,111 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --bg: #030712;
+  --surface: #111827;
+  --border: #1f2937;
+  --primary: #10b981;
+  --primary-glow: rgba(16, 185, 129, 0.4);
+}
+
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+html,
+body {
+  background-color: var(--bg);
+  color: #f9fafb;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  scroll-behavior: smooth;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #111827;
+}
+::-webkit-scrollbar-thumb {
+  background: #374151;
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #10b981;
+}
+
+/* Glow utilities */
+.glow-emerald {
+  box-shadow: 0 0 20px rgba(16, 185, 129, 0.4), 0 0 60px rgba(16, 185, 129, 0.1);
+}
+
+.glow-emerald-sm {
+  box-shadow: 0 0 8px rgba(16, 185, 129, 0.3);
+}
+
+.text-glow {
+  text-shadow: 0 0 20px rgba(52, 211, 153, 0.6);
+}
+
+/* Grid background pattern */
+.bg-grid {
+  background-image:
+    linear-gradient(rgba(16, 185, 129, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(16, 185, 129, 0.03) 1px, transparent 1px);
+  background-size: 60px 60px;
+}
+
+/* Card styles */
+.card {
+  @apply bg-gray-900/50 border border-gray-800 rounded-2xl p-6 backdrop-blur-sm;
+}
+
+.card-sm {
+  @apply bg-gray-900/50 border border-gray-800 rounded-xl p-4 backdrop-blur-sm;
+}
+
+/* Input styles */
+.input {
+  @apply w-full bg-gray-900 border border-gray-700 rounded-xl px-4 py-2.5 text-white text-sm
+         focus:outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500/30
+         placeholder:text-gray-600 transition-all;
+}
+
+/* Button styles */
+.btn-primary {
+  @apply px-6 py-3 bg-emerald-500 hover:bg-emerald-400 text-white font-semibold
+         rounded-xl transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed;
+}
+
+.btn-secondary {
+  @apply px-6 py-3 bg-gray-800 hover:bg-gray-700 text-gray-300 font-medium
+         rounded-xl border border-gray-700 transition-all duration-200;
+}
+
+/* Badge animations */
+@keyframes shimmer {
+  0% { background-position: -200% center; }
+  100% { background-position: 200% center; }
+}
+
+.shimmer {
+  background: linear-gradient(90deg, transparent 25%, rgba(255,255,255,0.05) 50%, transparent 75%);
+  background-size: 200% auto;
+  animation: shimmer 2s linear infinite;
+}
+
+/* Stat card number animation */
+@keyframes count-up {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.stat-value {
+  animation: count-up 0.6s ease-out forwards;
+}
