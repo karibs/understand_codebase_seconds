@@ -1,13 +1,6 @@
 import Link from 'next/link';
 import { TrendingUp, BarChart2, Shield, Zap, ChevronRight, Activity } from 'lucide-react';
 
-const stats = [
-  { label: '삼성전자 백테스트 수익률', value: '+82.4%', sub: '2020–2026 (6년)', color: 'text-emerald-400' },
-  { label: '연평균 수익률', value: '+10.7%', sub: 'CAGR', color: 'text-emerald-400' },
-  { label: '총 거래 횟수', value: '19회', sub: '6년간', color: 'text-cyan-400' },
-  { label: '초기 자본 대비', value: '1.82배', sub: '₩10M → ₩18.2M', color: 'text-emerald-400' },
-];
-
 const features = [
   {
     icon: <TrendingUp className="w-6 h-6" />,
@@ -86,25 +79,15 @@ export default function HomePage() {
             스윙 트레이딩 전략을 원하는 종목에 즉시 백테스트하세요.
           </p>
 
-          <div className="flex flex-col sm:flex-row gap-4 justify-center mb-16">
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link href="/simulator" className="btn-primary text-lg px-8 py-4 glow-emerald-sm inline-flex items-center gap-2 justify-center">
               시뮬레이터 시작하기
               <ChevronRight className="w-5 h-5" />
             </Link>
-            <Link href="/about" className="btn-secondary text-lg px-8 py-4 inline-flex items-center gap-2 justify-center">
-              전략 자세히 보기
+            <Link href="/realtime" className="btn-secondary text-lg px-8 py-4 inline-flex items-center gap-2 justify-center">
+              <Activity className="w-5 h-5" />
+              실시간 추적
             </Link>
-          </div>
-
-          {/* Stats */}
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-4xl mx-auto">
-            {stats.map((s) => (
-              <div key={s.label} className="card-sm text-center hover:border-emerald-500/30 transition-colors">
-                <div className={`text-3xl font-black ${s.color} stat-value`}>{s.value}</div>
-                <div className="text-gray-500 text-xs mt-1">{s.sub}</div>
-                <div className="text-gray-400 text-xs mt-1">{s.label}</div>
-              </div>
-            ))}
           </div>
         </div>
       </section>
