@@ -13,7 +13,6 @@
     "react": "^18",
     "react-dom": "^18",
     "recharts": "^2.12.2",
-    "yahoo-finance2": "^2.11.3",
     "lucide-react": "^0.363.0",
     "clsx": "^2.1.0"
   },
