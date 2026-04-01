@@ -9,6 +9,7 @@ import clsx from 'clsx';
 const links = [
   { href: '/', label: '홈' },
   { href: '/simulator', label: '시뮬레이터' },
+  { href: '/realtime', label: '실시간 추적' },
   { href: '/about', label: '전략 소개' },
   { href: '/contact', label: '문의' },
 ];
